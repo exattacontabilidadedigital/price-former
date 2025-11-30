@@ -280,7 +280,7 @@ export default function CostsPage() {
                             <h3 className="text-lg font-bold text-gray-900 dark:text-white">Despesas Fixas e Variáveis</h3>
                             <Dialog open={isExpenseModalOpen} onOpenChange={setIsExpenseModalOpen}>
                                 <DialogTrigger asChild>
-                                    <Button onClick={() => handleOpenExpenseModal()} className="bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-700">
+                                    <Button onClick={() => handleOpenExpenseModal()} className="bg-violet-600 hover:bg-violet-700 text-white dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white !text-white" style={{color: 'white'}}>
                                         <Plus className="w-4 h-4 mr-2" />
                                         Adicionar Nova Despesa
                                     </Button>
@@ -325,7 +325,7 @@ export default function CostsPage() {
                                                 </Select>
                                             </div>
                                         </div>
-                                        <Button onClick={handleSaveExpense} className="bg-violet-600 hover:bg-violet-700 w-full mt-2 dark:bg-violet-600 dark:hover:bg-violet-700">
+                                        <Button onClick={handleSaveExpense} className="bg-violet-600 hover:bg-violet-700 w-full mt-2 text-white dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white !text-white" style={{color: 'white'}}>
                                             {editingExpense ? "Atualizar Despesa" : "Salvar Despesa"}
                                         </Button>
                                     </div>
@@ -406,7 +406,7 @@ export default function CostsPage() {
                             <h3 className="text-lg font-bold text-gray-900 dark:text-white">Estimativas de Faturamento</h3>
                             <Dialog open={isRevenueModalOpen} onOpenChange={setIsRevenueModalOpen}>
                                 <DialogTrigger asChild>
-                                    <Button onClick={() => handleOpenRevenueModal()} className="bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-700">
+                                    <Button onClick={() => handleOpenRevenueModal()} className="bg-violet-600 hover:bg-violet-700 text-white dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white !text-white" style={{color: 'white'}}>
                                         <Plus className="w-4 h-4 mr-2" />
                                         Adicionar Novo Faturamento
                                     </Button>
@@ -439,7 +439,7 @@ export default function CostsPage() {
                                                 </SelectContent>
                                             </Select>
                                         </div>
-                                        <Button onClick={handleSaveRevenue} className="bg-violet-600 hover:bg-violet-700 w-full mt-2 dark:bg-violet-600 dark:hover:bg-violet-700">
+                                        <Button onClick={handleSaveRevenue} className="bg-violet-600 hover:bg-violet-700 w-full mt-2 text-white dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white !text-white" style={{color: 'white'}}>
                                             {editingRevenue ? "Atualizar Faturamento" : "Salvar Faturamento"}
                                         </Button>
                                     </div>
@@ -494,9 +494,9 @@ export default function CostsPage() {
                             <h3 className="text-lg font-bold text-gray-900 dark:text-white">Impostos Configurados</h3>
                             <Dialog open={isTaxModalOpen} onOpenChange={setIsTaxModalOpen}>
                                 <DialogTrigger asChild>
-                                    <Button onClick={() => handleOpenTaxModal()} className="bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-700">
+                                    <Button onClick={() => handleOpenTaxModal()} className="bg-violet-600 hover:bg-violet-700 text-white dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white !text-white" style={{color: 'white'}}>
                                         <Plus className="w-4 h-4 mr-2" />
-                                        Adicionar Novo Imposto
+                                        Adicionar Imposto
                                     </Button>
                                 </DialogTrigger>
                                 <DialogContent className="max-w-2xl dark:bg-card dark:border-border">
@@ -527,8 +527,8 @@ export default function CostsPage() {
                                                 />
                                             </div>
                                         </div>
-                                        <Button onClick={handleSaveTax} className="bg-violet-600 hover:bg-violet-700 w-full mt-2 dark:bg-violet-600 dark:hover:bg-violet-700">
-                                            {editingTax ? "Atualizar Impostos" : "Salvar Impostos"}
+                                        <Button onClick={handleSaveTax} className="bg-violet-600 hover:bg-violet-700 w-full mt-2 text-white dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white !text-white" style={{color: 'white'}}>
+                                            {editingTax ? "Atualizar Imposto" : "Salvar Imposto"}
                                         </Button>
                                     </div>
                                 </DialogContent>

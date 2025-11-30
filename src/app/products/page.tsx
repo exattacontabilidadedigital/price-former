@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { toast } from "sonner"
 const productSchema = z.object({
-    name: z.string().min(1, "Nome Ã© obrigatÃ³rio"),
+    name: z.string().min(1, "Nome é obrigatório"),
     ncm: z.string().optional(),
     costPrice: z.coerce.number().min(0, "Custo deve ser maior ou igual a 0"),
     icms: z.coerce.number().optional(),
@@ -241,7 +241,7 @@ export default function ProductsPage() {
         if (confirm("Tem certeza que deseja excluir este produto?")) {
             try {
                 await deleteProduct(id)
-                toast.success("Produto excluÃ­do com sucesso")
+                toast.success("Produto excluído com sucesso")
                 await fetchProducts()
             } catch (error) {
                 console.error("Error deleting product:", error)
@@ -259,11 +259,11 @@ export default function ProductsPage() {
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Cadastro de Produtos</h2>
-                    <p className="text-gray-500 dark:text-gray-400">Gerencie seus produtos e suas informaÃ§Ãµes.</p>
+                    <p className="text-gray-500 dark:text-gray-400">Gerencie seus produtos e suas informações.</p>
                 </div>
                 <Dialog open={isModalOpen} onOpenChange={handleOpenChange}>
                     <DialogTrigger asChild>
-                        <Button className="bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-700">
+                        <Button className="bg-violet-600 hover:bg-violet-700 text-white dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white !text-white" style={{color: 'white'}}>
                             <Plus className="w-4 h-4 mr-2" />
                             {editingProduct ? "Editar Produto" : "Novo Produto"}
                         </Button>
@@ -276,9 +276,9 @@ export default function ProductsPage() {
                             <Tabs defaultValue="general" className="w-full">
                                 <TabsList className="grid w-full grid-cols-4">
                                     <TabsTrigger value="general">Geral</TabsTrigger>
-                                    <TabsTrigger value="acquisition">Custo AquisiÃ§Ã£o</TabsTrigger>
+                                    <TabsTrigger value="acquisition">Custo Aquisição</TabsTrigger>
                                     <TabsTrigger value="taxes">Impostos</TabsTrigger>
-                                    <TabsTrigger value="pricing">PrecificaÃ§Ã£o</TabsTrigger>
+                                    <TabsTrigger value="pricing">Precificação</TabsTrigger>
                                 </TabsList>
 
                                 <TabsContent value="general" className="space-y-4 mt-4">
@@ -369,7 +369,7 @@ export default function ProductsPage() {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label className="dark:text-gray-300 font-bold">Total Custo AquisiÃ§Ã£o (R$)</Label>
+                                            <Label className="dark:text-gray-300 font-bold">Total Custo Aquisição (R$)</Label>
                                             <div className="flex h-10 w-full rounded-md border border-input bg-gray-100 px-3 py-2 text-sm dark:bg-muted dark:text-white dark:border-gray-700 font-bold items-center">
                                                 {(() => {
                                                     const cost = Number(form.watch("costPrice") || 0)
@@ -524,7 +524,7 @@ export default function ProductsPage() {
                                             />
                                         </div>
                                         <div className="space-y-2 sm:col-span-2">
-                                            <Label htmlFor="salesPrice" className="dark:text-gray-300">PreÃ§o de Venda (R$)</Label>
+                                            <Label htmlFor="salesPrice" className="dark:text-gray-300">Preço de Venda (R$)</Label>
                                             <Input
                                                 id="salesPrice"
                                                 type="number"
@@ -540,7 +540,7 @@ export default function ProductsPage() {
                             </Tabs>
 
                             <div className="mt-6">
-                                <Button type="submit" className="w-full bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-700">
+                                <Button type="submit" className="w-full bg-violet-600 hover:bg-violet-700 text-white dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white !text-white" style={{color: 'white'}}>
                                     {editingProduct ? "Atualizar" : "Salvar"}
                                 </Button>
                             </div>

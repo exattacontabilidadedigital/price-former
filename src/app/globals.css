@@ -1,26 +1,718 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light mode colors - default */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 262.1 83.3% 57.8%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222.2 84% 4.9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 262.1 83.3% 57.8%;
+  --radius: 0.75rem;
+
+  /* Calculator specific colors - light mode */
+  --calculator-success: 142.1 76.2% 36.3%;
+  --calculator-success-foreground: 355.7 100% 97.3%;
+  --calculator-highlight: 262.1 83.3% 57.8%;
+  --calculator-highlight-foreground: 210 40% 98%;
+  --calculator-neutral: 210 40% 96%;
+  --calculator-neutral-foreground: 215.4 16.3% 46.9%;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  /* Dark mode colors when dark class is applied */
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 262.1 83.3% 57.8%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 262.1 83.3% 57.8%;
+
+  /* Calculator specific colors - dark mode */
+  --calculator-success: 142.1 70.6% 45.3%;
+  --calculator-success-foreground: 144.9 80.4% 10%;
+  --calculator-highlight: 263.4 70% 50.4%;
+  --calculator-highlight-foreground: 210 40% 98%;
+  --calculator-neutral: 217.2 32.6% 17.5%;
+  --calculator-neutral-foreground: 215 20.2% 65.1%;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not(.light) {
+    /* Only apply if not explicitly set to light */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 262.1 83.3% 57.8%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 262.1 83.3% 57.8%;
+
+    /* Calculator specific colors - dark mode */
+    --calculator-success: 142.1 70.6% 45.3%;
+    --calculator-success-foreground: 144.9 80.4% 10%;
+    --calculator-highlight: 263.4 70% 50.4%;
+    --calculator-highlight-foreground: 210 40% 98%;
+    --calculator-neutral: 217.2 32.6% 17.5%;
+    --calculator-neutral-foreground: 215 20.2% 65.1%;
   }
 }
 
+.light {
+  /* Light mode colors when light class is applied */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 262.1 83.3% 57.8%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222.2 84% 4.9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 262.1 83.3% 57.8%;
+
+  /* Calculator specific colors - light mode */
+  --calculator-success: 142.1 76.2% 36.3%;
+  --calculator-success-foreground: 355.7 100% 97.3%;
+  --calculator-highlight: 262.1 83.3% 57.8%;
+  --calculator-highlight-foreground: 210 40% 98%;
+  --calculator-neutral: 210 40% 96%;
+  --calculator-neutral-foreground: 215.4 16.3% 46.9%;
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --radius: var(--radius);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Calculator specific theme colors */
+  --color-calculator-success: hsl(var(--calculator-success));
+  --color-calculator-success-foreground: hsl(var(--calculator-success-foreground));
+  --color-calculator-highlight: hsl(var(--calculator-highlight));
+  --color-calculator-highlight-foreground: hsl(var(--calculator-highlight-foreground));
+  --color-calculator-neutral: hsl(var(--calculator-neutral));
+  --color-calculator-neutral-foreground: hsl(var(--calculator-neutral-foreground));
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Dark mode class handling */
+.dark {
+  color-scheme: dark;
+}
+
+.light {
+  color-scheme: light;
+}
+
+html {
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Force theme application */
+html.dark,
+html.dark body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+html.light,
+html.light body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Enhanced calculator specific styles */
+.calculator-result {
+  background: hsl(var(--calculator-highlight) / 0.05);
+  border: 1px solid hsl(var(--calculator-highlight) / 0.2);
+  color: hsl(var(--calculator-highlight));
+}
+
+.calculator-success {
+  color: hsl(var(--calculator-success));
+}
+
+.calculator-composition {
+  background: hsl(var(--calculator-highlight) / 0.05);
+  border: 1px solid hsl(var(--calculator-highlight) / 0.1);
+}
+
+.calculator-composition-text {
+  color: hsl(var(--calculator-highlight));
+}
+
+/* Improved form styling */
+.calculator-input {
+  transition: all 200ms ease-in-out;
+}
+
+.calculator-input:focus {
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.15);
+  border-color: hsl(var(--ring));
+}
+
+/* Enhanced card styling */
+.calculator-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 3px 0 hsl(var(--foreground) / 0.1), 0 1px 2px 0 hsl(var(--foreground) / 0.06);
+}
+
+.calculator-card-elevated {
+  box-shadow: 0 4px 6px -1px hsl(var(--foreground) / 0.1), 0 2px 4px -1px hsl(var(--foreground) / 0.06);
+}
+
+/* Responsive typography improvements */
+.calculator-title {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.calculator-value-display {
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.calculator-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Improved button styling */
+.calculator-button-primary {
+  background: hsl(var(--calculator-highlight));
+  color: hsl(var(--calculator-highlight-foreground));
+  transition: all 200ms ease-in-out;
+}
+
+.calculator-button-primary:hover {
+  background: hsl(var(--calculator-highlight) / 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px 0 hsl(var(--calculator-highlight) / 0.3);
+}
+
+/* Grid improvements for better responsive layout */
+.calculator-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.calculator-grid-compact {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+/* Animation enhancements */
+@keyframes calculatorFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.calculator-animate-in {
+  animation: calculatorFadeIn 0.3s ease-out;
+}
+
+/* Print styles */
+@media print {
+  .calculator-no-print {
+    display: none !important;
+  }
+  
+  .calculator-card {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+  }
+}
+
+/* Sidebar specific improvements */
+.sidebar-nav-item {
+  position: relative;
+  transition: all 200ms ease-in-out;
+}
+
+.sidebar-nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: hsl(var(--calculator-highlight));
+  border-radius: 0 2px 2px 0;
+  transition: height 200ms ease-in-out;
+}
+
+.sidebar-nav-item.active::before {
+  height: 24px;
+}
+
+/* Removed hover transform that was interfering */
+
+/* Mobile menu improvements */
+@media (max-width: 768px) {
+  .sidebar-mobile-overlay {
+    background: hsl(var(--background) / 0.8);
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Theme toggle specific improvements */
+.theme-toggle {
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(45deg, hsl(var(--muted) / 0.5), transparent);
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+.theme-toggle:hover::before {
+  opacity: 1;
+}
+
+.theme-toggle:focus-visible {
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.15);
+  outline: none;
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Force dashboard title to be black in light mode */
+.dashboard-title {
+  color: #000000 !important;
+}
+
+.dark .dashboard-title {
+  color: #ffffff !important;
+}
+
+/* Force card titles to be black in light mode */
+.card-title-black {
+  color: #000000 !important;
+}
+
+.dark .card-title-black {
+  color: #ffffff !important;
+}
+
+/* Force main values to be black in light mode */
+.main-value-black {
+  color: #000000 !important;
+}
+
+.dark .main-value-black {
+  color: #ffffff !important;
+}
+
+/* Force product names to be black in light mode */
+.product-name-black {
+  color: #000000 !important;
+}
+
+.dark .product-name-black {
+  color: #d1d5db !important;
+}
+
+/* Global page title styling */
+h1, h2, h3, h4, h5, h6 {
+  color: #000000 !important;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: #ffffff !important;
+}
+
+/* Main content titles */
+main h1, main h2, main h3 {
+  color: #000000 !important;
+}
+
+.dark main h1, .dark main h2, .dark main h3 {
+  color: #ffffff !important;
+}
+
+/* Card title overrides */
+[data-slot="card-title"] {
+  color: #000000 !important;
+}
+
+.dark [data-slot="card-title"] {
+  color: #ffffff !important;
+}
+
+/* Force violet button text to be white in all modes - BUTTONS ONLY */
+button.bg-violet-600,
+[class*="bg-violet-600"],
+button[class*="bg-violet-600"],
+.bg-violet-600,
+[data-slot="button"][class*="bg-violet-600"] {
+  color: white !important;
+  background-color: rgb(124 58 237) !important;
+}
+
+button.bg-violet-600:hover,
+[class*="bg-violet-600"]:hover,
+button[class*="bg-violet-600"]:hover,
+.bg-violet-600:hover,
+[data-slot="button"][class*="bg-violet-600"]:hover {
+  color: white !important;
+  background-color: rgb(109 40 217) !important;
+}
+
+button.bg-violet-700,
+[class*="bg-violet-700"],
+button[class*="bg-violet-700"],
+.bg-violet-700,
+[data-slot="button"][class*="bg-violet-700"] {
+  color: white !important;
+  background-color: rgb(109 40 217) !important;
+}
+
+/* More specific rule for button with violet background */
+button[class*="bg-violet-600"][class*="text-white"] {
+  color: #ffffff !important;
+}
+
+/* Improved theme toggle icons */
+.theme-toggle svg {
+  transform-origin: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Button enhancements */
+.button-primary-enhanced {
+  background: linear-gradient(135deg, hsl(var(--calculator-highlight)), hsl(var(--calculator-highlight) / 0.8));
+  transition: all 200ms ease-in-out;
+}
+
+.button-primary-enhanced:hover {
+  background: linear-gradient(135deg, hsl(var(--calculator-highlight) / 0.9), hsl(var(--calculator-highlight) / 0.7));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--calculator-highlight) / 0.3);
+}
+
+/* Dashboard button overrides for proper text color */
+[data-slot="button"][class*="outline"] {
+  color: #111827 !important; /* gray-900 for light mode */
+}
+
+.dark [data-slot="button"][class*="outline"] {
+  color: #d1d5db !important; /* gray-300 for dark mode */
+}
+
+/* Primary button text color fixes */
+.button-primary-white,
+[data-slot="button"].bg-primary,
+button.bg-primary,
+[class*="bg-primary"] {
+  color: #ffffff !important;
+}
+
+.button-primary-white:hover,
+[data-slot="button"].bg-primary:hover,
+button.bg-primary:hover,
+[class*="bg-primary"]:hover {
+  color: #ffffff !important;
+}
+
+/* Specific fixes for purple/violet buttons */
+button[class*="bg-violet-"],
+[class*="bg-violet-"] {
+  color: #ffffff !important;
+}
+
+/* Primary variant buttons should always have white text */
+[data-slot="button"][class*="bg-primary"] {
+  color: #ffffff !important;
+}
+
+.dark [data-slot="button"][class*="bg-primary"] {
+  color: #ffffff !important;
+}
+
+/* ===== LIGHT MODE FIXES ===== */
+/* Fix input colors in light mode - force proper backgrounds and text colors */
+:root:not(.dark) input[data-slot="input"],
+:root:not(.dark) [data-slot="input"] {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: #d1d5db !important;
+}
+
+:root:not(.dark) input[data-slot="input"]:focus,
+:root:not(.dark) [data-slot="input"]:focus {
+  border-color: hsl(var(--ring)) !important;
+  background-color: #ffffff !important;
+  color: #111827 !important;
+}
+
+/* Fix select component colors in light mode */
+:root:not(.dark) [data-slot="select-trigger"] {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: #d1d5db !important;
+}
+
+:root:not(.dark) [data-slot="select-trigger"]:focus {
+  border-color: hsl(var(--ring)) !important;
+  background-color: #ffffff !important;
+  color: #111827 !important;
+}
+
+:root:not(.dark) [data-slot="select-content"] {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: #d1d5db !important;
+}
+
+:root:not(.dark) [data-slot="select-item"] {
+  color: #111827 !important;
+}
+
+:root:not(.dark) [data-slot="select-item"]:focus,
+:root:not(.dark) [data-slot="select-item"]:hover {
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
+}
+
+/* Fix placeholder colors in light mode */
+:root:not(.dark) input::placeholder,
+:root:not(.dark) [data-slot="input"]::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Fix select placeholder/value colors in light mode */
+:root:not(.dark) [data-slot="select-trigger"][data-placeholder] {
+  color: #6b7280 !important;
+}
+
+/* Fix dialog/modal backgrounds in light mode */
+:root:not(.dark) [role="dialog"],
+:root:not(.dark) .dialog-content {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: #d1d5db !important;
+}
+
+/* Fix label colors in light mode */
+:root:not(.dark) label,
+:root:not(.dark) [data-slot="label"] {
+  color: #111827 !important;
+}
+
+/* Fix number display colors - ensure all numbers are black in light mode */
+:root:not(.dark) .text-3xl,
+:root:not(.dark) .text-2xl,
+:root:not(.dark) .text-xl,
+:root:not(.dark) .text-lg {
+  color: #111827 !important;
+}
+
+/* Fix percentage and currency displays */
+:root:not(.dark) [class*="text-gray-900"] {
+  color: #111827 !important;
+}
+
+/* Fix table cell text colors in light mode */
+:root:not(.dark) td,
+:root:not(.dark) th,
+:root:not(.dark) [role="cell"],
+:root:not(.dark) [role="columnheader"] {
+  color: #111827 !important;
+}
+
+/* Fix table header colors to be more subtle */
+:root:not(.dark) th,
+:root:not(.dark) [role="columnheader"] {
+  color: #6b7280 !important;
+  font-weight: 500;
+}
+
+/* Force white backgrounds for form elements */
+:root:not(.dark) textarea,
+:root:not(.dark) select,
+:root:not(.dark) input[type="text"],
+:root:not(.dark) input[type="email"],
+:root:not(.dark) input[type="password"],
+:root:not(.dark) input[type="number"] {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: #d1d5db !important;
+}
+
+/* Fix any remaining dark mode heritage issues */
+:root:not(.dark) * {
+  /* Ensure no element inherits white text from dark mode */
+}
+
+:root:not(.dark) .text-white {
+  color: #ffffff !important; /* Keep intentional white text */
+}
+
+/* Specific fixes for cost page cards and values */
+:root:not(.dark) [class*="text-gray-900"] {
+  color: #111827 !important;
+}
+
+/* Ensure card content has proper colors */
+:root:not(.dark) [data-slot="card-content"] * {
+  color: inherit;
+}
+
+/* Fix any lingering dark mode text inheritance */
+:root:not(.dark) [class*="dark:text-"] {
+  color: #111827 !important;
+}
+
+/* Force white background for cards in light mode */
+:root:not(.dark) [data-slot="card"].bg-white,
+:root:not(.dark) .bg-white {
+  background-color: #ffffff !important;
+}
+
+/* Enhanced tabs styling */
+[data-slot="tabs-list"] {
+  border-bottom: 1px solid hsl(var(--border));
+  background: transparent;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+[data-slot="tabs-trigger"] {
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent !important;
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  margin-bottom: -1px;
+  transition: all 0.2s ease-in-out;
+}
+
+[data-slot="tabs-trigger"]:hover {
+  color: hsl(var(--foreground));
+  background: transparent !important;
+}
+
+[data-slot="tabs-trigger"][data-state="active"] {
+  color: hsl(var(--foreground)) !important;
+  border-bottom-color: hsl(var(--primary));
+  background: transparent !important;
+  font-weight: 600;
+}
+
+.dark [data-slot="tabs-trigger"] {
+  color: hsl(var(--muted-foreground));
+}
+
+.dark [data-slot="tabs-trigger"]:hover {
+  color: hsl(var(--foreground));
+}
+
+.dark [data-slot="tabs-trigger"][data-state="active"] {
+  color: hsl(var(--foreground)) !important;
+  border-bottom-color: hsl(var(--primary));
 }
