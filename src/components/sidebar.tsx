@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Tag, ShoppingCart, DollarSign, BarChart3 } from "lucide-react"
+import { LayoutDashboard, Tag, ShoppingCart, DollarSign, BarChart3, Calculator, List, ChevronDown, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
@@ -17,6 +17,18 @@ const routes = [
         label: "Precificação",
         icon: Tag,
         href: "/calculator",
+        subRoutes: [
+            {
+                label: "Calculadora",
+                icon: Calculator,
+                href: "/calculator",
+            },
+            {
+                label: "Listagem",
+                icon: List,
+                href: "/calculator/listagem",
+            },
+        ]
     },
     {
         label: "Cadastro de Produtos",
@@ -38,6 +50,7 @@ const routes = [
 export function Sidebar() {
     const pathname = usePathname()
     const { data: session } = useSession()
+    const [expandedMenus, setExpandedMenus] = useState<string[]>([])
 
     const [companyName, setCompanyName] = useState(session?.user?.company?.fantasyName || session?.user?.company?.name || "Empresa")
     const [companyCnpj, setCompanyCnpj] = useState(session?.user?.company?.cnpj || "")
@@ -66,6 +79,26 @@ export function Sidebar() {
         }
     }, [session])
 
+    // Auto-expand menu if current path is in submenu
+    useEffect(() => {
+        routes.forEach(route => {
+            if (route.subRoutes) {
+                const isInSubRoute = route.subRoutes.some(subRoute => pathname === subRoute.href)
+                if (isInSubRoute && !expandedMenus.includes(route.label)) {
+                    setExpandedMenus(prev => [...prev, route.label])
+                }
+            }
+        })
+    }, [pathname])
+
+    const toggleMenu = (label: string) => {
+        setExpandedMenus(prev => 
+            prev.includes(label) 
+                ? prev.filter(item => item !== label)
+                : [...prev, label]
+        )
+    }
+
     return (
         <div className="space-y-4 py-4 flex flex-col h-full bg-card border-r border-border calculator-card">
             <div className="px-3 py-2 flex-1">
@@ -90,26 +123,92 @@ export function Sidebar() {
                 </div>
                 <div className="space-y-1">
                     {routes.map((route) => (
-                        <Link
-                            key={route.href}
-                            href={route.href}
-                            className={cn(
-                                "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition-all duration-200 sidebar-nav-item",
-                                pathname === route.href 
-                                    ? "!bg-violet-600 !text-white shadow-sm active" 
-                                    : "!text-gray-700 dark:!text-gray-700 hover:!bg-transparent hover:!text-violet-600 dark:hover:!text-violet-400"
+                        <div key={route.href}>
+                            {route.subRoutes ? (
+                                <div>
+                                    <button
+                                        onClick={() => toggleMenu(route.label)}
+                                        className={cn(
+                                            "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition-all duration-200 sidebar-nav-item",
+                                            pathname.startsWith(route.href) 
+                                                ? "!bg-violet-600 !text-white shadow-sm active" 
+                                                : "!text-gray-700 dark:!text-gray-700 hover:!bg-transparent hover:!text-violet-600 dark:hover:!text-violet-400"
+                                        )}
+                                    >
+                                        <div className="flex items-center flex-1">
+                                            <route.icon className={cn(
+                                                "h-5 w-5 mr-3 transition-colors duration-200",
+                                                pathname.startsWith(route.href) 
+                                                    ? "!text-white" 
+                                                    : "!text-gray-700 dark:!text-gray-700 group-hover:!text-violet-600 dark:group-hover:!text-violet-400"
+                                            )} />
+                                            {route.label}
+                                        </div>
+                                        {expandedMenus.includes(route.label) ? (
+                                            <ChevronDown className={cn(
+                                                "h-4 w-4 transition-colors duration-200",
+                                                pathname.startsWith(route.href) 
+                                                    ? "!text-white" 
+                                                    : "!text-gray-700 dark:!text-gray-700 group-hover:!text-violet-600 dark:group-hover:!text-violet-400"
+                                            )} />
+                                        ) : (
+                                            <ChevronRight className={cn(
+                                                "h-4 w-4 transition-colors duration-200",
+                                                pathname.startsWith(route.href) 
+                                                    ? "!text-white" 
+                                                    : "!text-gray-700 dark:!text-gray-700 group-hover:!text-violet-600 dark:group-hover:!text-violet-400"
+                                            )} />
+                                        )}
+                                    </button>
+                                    {expandedMenus.includes(route.label) && (
+                                        <div className="ml-8 mt-1 space-y-1">
+                                            {route.subRoutes.map((subRoute) => (
+                                                <Link
+                                                    key={subRoute.href}
+                                                    href={subRoute.href}
+                                                    className={cn(
+                                                        "text-sm group flex p-2 w-full justify-start font-medium cursor-pointer rounded-lg transition-all duration-200 sidebar-nav-item",
+                                                        pathname === subRoute.href 
+                                                            ? "!bg-violet-500 !text-white shadow-sm active" 
+                                                            : "!text-gray-600 dark:!text-gray-600 hover:!bg-transparent hover:!text-violet-600 dark:hover:!text-violet-400"
+                                                    )}
+                                                >
+                                                    <div className="flex items-center flex-1">
+                                                        <subRoute.icon className={cn(
+                                                            "h-4 w-4 mr-3 transition-colors duration-200",
+                                                            pathname === subRoute.href 
+                                                                ? "!text-white" 
+                                                                : "!text-gray-600 dark:!text-gray-600 group-hover:!text-violet-600 dark:group-hover:!text-violet-400"
+                                                        )} />
+                                                        {subRoute.label}
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <Link
+                                    href={route.href}
+                                    className={cn(
+                                        "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition-all duration-200 sidebar-nav-item",
+                                        pathname === route.href 
+                                            ? "!bg-violet-600 !text-white shadow-sm active" 
+                                            : "!text-gray-700 dark:!text-gray-700 hover:!bg-transparent hover:!text-violet-600 dark:hover:!text-violet-400"
+                                    )}
+                                >
+                                    <div className="flex items-center flex-1">
+                                        <route.icon className={cn(
+                                            "h-5 w-5 mr-3 transition-colors duration-200",
+                                            pathname === route.href 
+                                                ? "!text-white" 
+                                                : "!text-gray-700 dark:!text-gray-700 group-hover:!text-violet-600 dark:group-hover:!text-violet-400"
+                                        )} />
+                                        {route.label}
+                                    </div>
+                                </Link>
                             )}
-                        >
-                            <div className="flex items-center flex-1">
-                                <route.icon className={cn(
-                                    "h-5 w-5 mr-3 transition-colors duration-200",
-                                    pathname === route.href 
-                                        ? "!text-white" 
-                                        : "!text-gray-700 dark:!text-gray-700 group-hover:!text-violet-600 dark:group-hover:!text-violet-400"
-                                )} />
-                                {route.label}
-                            </div>
-                        </Link>
+                        </div>
                     ))}
                 </div>
             </div>

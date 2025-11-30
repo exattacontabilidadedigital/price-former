@@ -34,6 +34,7 @@ interface Tax {
     id: string
     name: string
     rate: number
+    type: string
 }
 
 export default function CostsPage() {
@@ -62,6 +63,7 @@ export default function CostsPage() {
 
     const [taxName, setTaxName] = useState("")
     const [taxRate, setTaxRate] = useState("")
+    const [taxType, setTaxType] = useState("")
 
     const fetchData = async () => {
         const [e, r, t] = await Promise.all([getExpenses(), getRevenues(), getTaxes()])
@@ -168,20 +170,23 @@ export default function CostsPage() {
             setEditingTax(tax)
             setTaxName(tax.name)
             setTaxRate(tax.rate.toString())
+            setTaxType(tax.type || "OTHERS")
         } else {
             setEditingTax(null)
             setTaxName("")
             setTaxRate("")
+            setTaxType("")
         }
         setIsTaxModalOpen(true)
     }
 
     const handleSaveTax = async () => {
-        if (!taxName || !taxRate) return
+        if (!taxName || !taxRate || !taxType) return
 
         const data = {
             name: taxName,
-            rate: parseFloat(taxRate)
+            rate: parseFloat(taxRate),
+            type: taxType
         }
 
         if (editingTax) {
@@ -192,6 +197,7 @@ export default function CostsPage() {
 
         setTaxName("")
         setTaxRate("")
+        setTaxType("")
         setIsTaxModalOpen(false)
         setEditingTax(null)
         fetchData()
@@ -506,26 +512,44 @@ export default function CostsPage() {
                                     <div className="grid gap-4 py-4">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div className="grid gap-2">
-                                                <Label htmlFor="tax-name" className="dark:text-gray-300">Nome do Imposto</Label>
+                                                <Label htmlFor="tax-type" className="dark:text-gray-300">Tipo de Imposto</Label>
+                                                <Select value={taxType} onValueChange={setTaxType}>
+                                                    <SelectTrigger className="dark:bg-input dark:border-input dark:text-white">
+                                                        <SelectValue placeholder="Selecione o tipo" />
+                                                    </SelectTrigger>
+                                                    <SelectContent className="dark:bg-card dark:border-border">
+                                                        <SelectItem value="ICMS" className="dark:text-gray-300 dark:focus:bg-muted">ICMS</SelectItem>
+                                                        <SelectItem value="PIS" className="dark:text-gray-300 dark:focus:bg-muted">PIS</SelectItem>
+                                                        <SelectItem value="COFINS" className="dark:text-gray-300 dark:focus:bg-muted">COFINS</SelectItem>
+                                                        <SelectItem value="CPP" className="dark:text-gray-300 dark:focus:bg-muted">CPP</SelectItem>
+                                                        <SelectItem value="ISSQN" className="dark:text-gray-300 dark:focus:bg-muted">ISSQN</SelectItem>
+                                                        <SelectItem value="CSLL" className="dark:text-gray-300 dark:focus:bg-muted">CSLL</SelectItem>
+                                                        <SelectItem value="IRPJ" className="dark:text-gray-300 dark:focus:bg-muted">IRPJ</SelectItem>
+                                                        <SelectItem value="OTHERS" className="dark:text-gray-300 dark:focus:bg-muted">Outros</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                            <div className="grid gap-2">
+                                                <Label htmlFor="tax-name" className="dark:text-gray-300">Descrição/Nome</Label>
                                                 <Input
                                                     id="tax-name"
-                                                    placeholder=""
+                                                    placeholder="Ex: ICMS SP"
                                                     className="dark:bg-input dark:border-input dark:text-white"
                                                     value={taxName}
                                                     onChange={e => setTaxName(e.target.value)}
                                                 />
                                             </div>
-                                            <div className="grid gap-2">
-                                                <Label htmlFor="tax-rate" className="dark:text-gray-300">Alíquotas (%)</Label>
-                                                <Input
-                                                    id="tax-rate"
-                                                    placeholder=""
-                                                    type="number"
-                                                    className="dark:bg-input dark:border-input dark:text-white"
-                                                    value={taxRate}
-                                                    onChange={e => setTaxRate(e.target.value)}
-                                                />
-                                            </div>
+                                        </div>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="tax-rate" className="dark:text-gray-300">Alíquota (%)</Label>
+                                            <Input
+                                                id="tax-rate"
+                                                placeholder="0.00"
+                                                type="number"
+                                                className="dark:bg-input dark:border-input dark:text-white"
+                                                value={taxRate}
+                                                onChange={e => setTaxRate(e.target.value)}
+                                            />
                                         </div>
                                         <Button onClick={handleSaveTax} className="bg-violet-600 hover:bg-violet-700 w-full mt-2 text-white dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white !text-white" style={{color: 'white'}}>
                                             {editingTax ? "Atualizar Imposto" : "Salvar Imposto"}
@@ -538,7 +562,8 @@ export default function CostsPage() {
                             <Table className="min-w-[600px]">
                                 <TableHeader>
                                     <TableRow className="dark:border-border">
-                                        <TableHead className="dark:text-gray-400">NOME DO IMPOSTO</TableHead>
+                                        <TableHead className="dark:text-gray-400">TIPO</TableHead>
+                                        <TableHead className="dark:text-gray-400">DESCRIÇÃO</TableHead>
                                         <TableHead className="dark:text-gray-400">ALÍQUOTA (%)</TableHead>
                                         <TableHead className="text-right dark:text-gray-400">AÇÕES</TableHead>
                                     </TableRow>
@@ -546,6 +571,7 @@ export default function CostsPage() {
                                 <TableBody>
                                     {taxes.map(tax => (
                                         <TableRow key={tax.id} className="dark:border-border">
+                                            <TableCell className="dark:text-gray-300 font-medium">{tax.type || 'Outros'}</TableCell>
                                             <TableCell className="dark:text-gray-300">{tax.name}</TableCell>
                                             <TableCell className="dark:text-gray-300">{tax.rate}%</TableCell>
                                             <TableCell className="text-right">

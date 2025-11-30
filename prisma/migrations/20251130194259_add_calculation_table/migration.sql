@@ -1,0 +1,27 @@
+-- CreateTable
+CREATE TABLE "Calculation" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "productId" TEXT,
+    "productName" TEXT NOT NULL,
+    "costPrice" REAL NOT NULL,
+    "markup" REAL NOT NULL,
+    "suggestedPrice" REAL NOT NULL,
+    "totalCosts" REAL NOT NULL,
+    "totalTaxes" REAL NOT NULL,
+    "profitMargin" REAL NOT NULL,
+    "icms" REAL NOT NULL DEFAULT 0,
+    "ipi" REAL NOT NULL DEFAULT 0,
+    "freight" REAL NOT NULL DEFAULT 0,
+    "otherCosts" REAL NOT NULL DEFAULT 0,
+    "pis" REAL NOT NULL DEFAULT 0,
+    "cofins" REAL NOT NULL DEFAULT 0,
+    "cpp" REAL NOT NULL DEFAULT 0,
+    "issqn" REAL NOT NULL DEFAULT 0,
+    "csll" REAL NOT NULL DEFAULT 0,
+    "irpj" REAL NOT NULL DEFAULT 0,
+    "taxOthers" REAL NOT NULL DEFAULT 0,
+    "userId" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "Calculation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);

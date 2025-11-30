@@ -102,11 +102,13 @@ export async function getTaxes() {
 export async function createTax(data: {
     name: string
     rate: number
+    type: string
 }) {
     const tax = await prisma.tax.create({
         data: {
             name: data.name,
             rate: data.rate,
+            type: data.type,
         },
     })
     revalidatePath('/costs')
@@ -116,12 +118,14 @@ export async function createTax(data: {
 export async function updateTax(id: string, data: {
     name: string
     rate: number
+    type: string
 }) {
     const tax = await prisma.tax.update({
         where: { id },
         data: {
             name: data.name,
             rate: data.rate,
+            type: data.type,
         },
     })
     revalidatePath('/costs')
