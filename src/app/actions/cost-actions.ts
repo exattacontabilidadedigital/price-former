@@ -24,6 +24,7 @@ export async function createExpense(data: {
         },
     })
     revalidatePath('/costs')
+    revalidatePath('/calculator')
     return expense
 }
 
@@ -41,12 +42,14 @@ export async function updateExpense(id: string, data: {
         },
     })
     revalidatePath('/costs')
+    revalidatePath('/calculator')
     return expense
 }
 
 export async function deleteExpense(id: string) {
     await prisma.expense.delete({ where: { id } })
     revalidatePath('/costs')
+    revalidatePath('/calculator')
 }
 
 // --- Revenue ---
@@ -68,6 +71,7 @@ export async function createRevenue(data: {
         },
     })
     revalidatePath('/costs')
+    revalidatePath('/calculator')
     return revenue
 }
 
@@ -83,12 +87,14 @@ export async function updateRevenue(id: string, data: {
         },
     })
     revalidatePath('/costs')
+    revalidatePath('/calculator')
     return revenue
 }
 
 export async function deleteRevenue(id: string) {
     await prisma.revenue.delete({ where: { id } })
     revalidatePath('/costs')
+    revalidatePath('/calculator')
 }
 
 // --- Taxes ---
@@ -112,6 +118,7 @@ export async function createTax(data: {
         },
     })
     revalidatePath('/costs')
+    revalidatePath('/calculator')
     return tax
 }
 
@@ -129,10 +136,12 @@ export async function updateTax(id: string, data: {
         },
     })
     revalidatePath('/costs')
+    revalidatePath('/calculator')
     return tax
 }
 
 export async function deleteTax(id: string) {
     await prisma.tax.delete({ where: { id } })
     revalidatePath('/costs')
+    revalidatePath('/calculator')
 }

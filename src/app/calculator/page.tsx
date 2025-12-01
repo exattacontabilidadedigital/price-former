@@ -21,6 +21,7 @@ interface Product {
   markup?: number | null
   salesPrice?: number | null
   icms?: number | null
+  icmsPurchase?: number | null
   ipi?: number | null
   freight?: number | null
   others?: number | null
@@ -80,6 +81,7 @@ function MarkupCalculatorContent() {
 
   // Product specific taxes
   const [icms, setIcms] = useState("")
+  const [icmsPurchase, setIcmsPurchase] = useState("")
   const [ipi, setIpi] = useState("")
   const [freight, setFreight] = useState("")
   const [otherCosts, setOtherCosts] = useState("")
@@ -137,6 +139,7 @@ function MarkupCalculatorContent() {
       setFixedExpenseRate("")
       setVariableExpenseRate("")
       setIcms("")
+      setIcmsPurchase("")
       setIpi("")
       setFreight("")
       setOtherCosts("")
@@ -164,6 +167,7 @@ function MarkupCalculatorContent() {
       setFixedExpenseRate("")
       setVariableExpenseRate("")
       setIcms("")
+      setIcmsPurchase("")
       setIpi("")
       setFreight("")
       setOtherCosts("")
@@ -294,6 +298,7 @@ function MarkupCalculatorContent() {
         // If a product IS selected, we load its saved values.
         
         setIcms(prod.icms?.toString() || getGlobalTax('ICMS').toString())
+        setIcmsPurchase(prod.icmsPurchase?.toString() || "0")
         setIpi(prod.ipi?.toString() || "0") // IPI is usually value, not rate in this form? No, form says IPI (R$) but schema has rate? Wait.
         // Form has IPI (R$) in "Custos Adicionais". Schema has ipi Float.
         // Let's keep IPI as is for now.
@@ -321,6 +326,7 @@ function MarkupCalculatorContent() {
       setCostPrice("")
       
       setIcms(getGlobalTax('ICMS').toString())
+      setIcmsPurchase("")
       setPis(getGlobalTax('PIS').toString())
       setCofins(getGlobalTax('COFINS').toString())
       setCpp(getGlobalTax('CPP').toString())
@@ -333,6 +339,8 @@ function MarkupCalculatorContent() {
       setFreight("")
       setOtherCosts("")
       setDesiredProfitMargin("")
+      setFixedExpenseRate(calculatedFixedRate.toFixed(2))
+      setVariableExpenseRate(calculatedVariableRate.toFixed(2))
     }
   }, [selectedProductId, products, calculatedFixedRate, calculatedVariableRate, globalTaxes])
 
@@ -341,7 +349,9 @@ function MarkupCalculatorContent() {
   const ipiVal = parseFloat(ipi) || 0
   const freightVal = parseFloat(freight) || 0
   const otherVal = parseFloat(otherCosts) || 0
-  const totalCost = cost + ipiVal + freightVal + otherVal
+  const icmsPurchasePercent = parseFloat(icmsPurchase) || 0
+  const icmsPurchaseVal = cost * (icmsPurchasePercent / 100)
+  const totalCost = cost + ipiVal + freightVal + otherVal - icmsPurchaseVal
 
   const fixedRate = parseFloat(fixedExpenseRate) || 0
   const variableRate = parseFloat(variableExpenseRate) || 0
@@ -360,19 +370,20 @@ function MarkupCalculatorContent() {
 
   const profitMargin = parseFloat(desiredProfitMargin) || 0
 
-  // Formula: SalesPrice = TotalCost / (1 - (TotalRates / 100))
-  // TotalRates = Fixed + Variable + Taxes + Profit
+  // Formula: Markup Divisor = 1 / (1 - (TotalRates / 100))
+  // SalesPrice = TotalCost * Markup
   const totalDeductionsRate = fixedRate + variableRate + totalTaxRate + profitMargin
 
   let suggestedPrice = 0
   let markup = 0
 
   if (totalDeductionsRate < 100) {
-    suggestedPrice = totalCost / (1 - (totalDeductionsRate / 100))
-    if (totalCost > 0) {
-      markup = suggestedPrice / totalCost // Or (SalesPrice - Cost) / Cost ? Usually Markup is multiplier or % added. 
-      // Let's use Multiplier: Price = Cost * Markup -> Markup = Price / Cost
-    }
+    // Cálculo do Markup Divisor
+    const divisor = 1 - (totalDeductionsRate / 100)
+    markup = 1 / divisor
+    
+    // O Preço Sugerido é o Custo Total (Líquido) multiplicado pelo Markup
+    suggestedPrice = totalCost * markup
   }
 
   const handleSave = async () => {
@@ -415,6 +426,7 @@ function MarkupCalculatorContent() {
         markup: parseFloat(markup.toFixed(2)),
         salesPrice: parseFloat(suggestedPrice.toFixed(2)),
         icms: parseFloat(icms) || 0,
+        icmsPurchase: parseFloat(icmsPurchase) || 0,
         ipi: parseFloat(ipi) || 0,
         freight: parseFloat(freight) || 0,
         others: parseFloat(otherCosts) || 0,
@@ -505,6 +517,18 @@ function MarkupCalculatorContent() {
                   />
                 </div>
                 <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">ICMS Compra (%)</Label>
+                  <div className="relative">
+                    <Input
+                      type="number"
+                      value={icmsPurchase}
+                      onChange={(e) => setIcmsPurchase(e.target.value)}
+                      className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-black dark:text-white focus:border-violet-500 dark:focus:border-violet-400 pr-8"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 text-sm">%</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Desp. Fixas</Label>
                   <div className="relative">
                     <Input
@@ -525,19 +549,6 @@ function MarkupCalculatorContent() {
                       onChange={(e) => setVariableExpenseRate(e.target.value)}
                       className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-black dark:text-white focus:border-violet-500 dark:focus:border-violet-400 pr-8"
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 text-sm">%</span>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Tributos</Label>
-                  <div className="relative">
-                    <Input
-                      type="number"
-                      value={totalTaxRate.toFixed(2)}
-                      readOnly
-                      className="bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 pr-8"
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 text-sm">%</span>
                   </div>
                 </div>
               </div>
