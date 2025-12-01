@@ -65,7 +65,7 @@ export async function saveCalculation(data: {
   })
 
   if (!userExists) {
-    throw new Error("Usuário não encontrado. Por favor, faça login novamente.")
+    redirect("/login?forceLogin=true")
   }
 
   try {

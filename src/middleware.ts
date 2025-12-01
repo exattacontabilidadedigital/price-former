@@ -21,7 +21,9 @@ export default auth((req) => {
     }
   } else if (isLoggedIn) {
     // Redirect authenticated users to dashboard if they try to access login/register
-    if (nextUrl.pathname === '/login' || nextUrl.pathname === '/register') {
+    // Unless forceLogin param is present (used when session is invalid/user deleted)
+    const forceLogin = nextUrl.searchParams.get('forceLogin')
+    if ((nextUrl.pathname === '/login' || nextUrl.pathname === '/register') && !forceLogin) {
       return Response.redirect(new URL('/dashboard', nextUrl));
     }
   }

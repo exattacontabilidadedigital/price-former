@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Pencil, Trash2, Calculator } from "lucide-react"
 import { getProducts, createProduct, updateProduct, deleteProduct } from "@/app/actions/product-actions"
+import { getTaxes } from "@/app/actions/cost-actions"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -63,9 +64,17 @@ interface Product {
     updatedAt: Date
 }
 
+interface Tax {
+    id: string
+    name: string
+    rate: number
+    type: string
+}
+
 export default function ProductsPage() {
     const router = useRouter()
     const [products, setProducts] = useState<Product[]>([])
+    const [globalTaxes, setGlobalTaxes] = useState<Tax[]>([])
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editingProduct, setEditingProduct] = useState<Product | null>(null)
 
@@ -96,16 +105,26 @@ export default function ProductsPage() {
 
     const fetchProducts = async () => {
         try {
-            const data = await getProducts()
-            setProducts(data)
+            const [productsData, taxesData] = await Promise.all([
+                getProducts(),
+                getTaxes()
+            ])
+            setProducts(productsData)
+            setGlobalTaxes(taxesData)
         } catch (error) {
-            toast.error("Erro ao carregar produtos")
+            toast.error("Erro ao carregar dados")
         }
     }
 
     useEffect(() => {
         fetchProducts()
     }, [])
+
+    const getGlobalTax = (type: string) => {
+        return globalTaxes
+            .filter(t => t.type === type)
+            .reduce((acc, curr) => acc + curr.rate, 0)
+    }
 
     useEffect(() => {
         if (editingProduct) {
@@ -135,7 +154,7 @@ export default function ProductsPage() {
                 name: "",
                 ncm: "",
                 costPrice: 0,
-                icms: 0,
+                icms: getGlobalTax('ICMS'),
                 icmsPurchase: 0,
                 ipi: 0,
                 ipiPurchase: 0,
@@ -144,16 +163,16 @@ export default function ProductsPage() {
                 markup: 0,
                 profitMargin: 0,
                 salesPrice: 0,
-                pis: 0,
-                cofins: 0,
-                cpp: 0,
-                issqn: 0,
-                csll: 0,
-                irpj: 0,
-                taxOthers: 0,
+                pis: getGlobalTax('PIS'),
+                cofins: getGlobalTax('COFINS'),
+                cpp: getGlobalTax('CPP'),
+                issqn: getGlobalTax('ISSQN'),
+                csll: getGlobalTax('CSLL'),
+                irpj: getGlobalTax('IRPJ'),
+                taxOthers: getGlobalTax('OTHERS'),
             })
         }
-    }, [editingProduct, form])
+    }, [editingProduct, form, globalTaxes])
 
     const handleOpenChange = (open: boolean) => {
         setIsModalOpen(open)
