@@ -28,7 +28,9 @@ declare module "next-auth" {
         company?: {
             id: string
             name: string
+            fantasyName: string | null
             cnpj: string | null
+            logoUrl: string | null
         }
     }
 }
@@ -43,7 +45,9 @@ declare module "next-auth/jwt" {
         company?: {
             id: string
             name: string
+            fantasyName: string | null
             cnpj: string | null
+            logoUrl: string | null
         }
     }
 }

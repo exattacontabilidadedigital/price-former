@@ -14,8 +14,8 @@ import { getCalculations, deleteCalculation } from "@/app/actions/calculation-ac
 
 interface Calculation {
   id: string
-  calculationName?: string
-  createdAt: string
+  calculationName?: string | null
+  createdAt: Date | string
   productName: string
   costPrice: number
   markup: number
@@ -122,7 +122,7 @@ export default function CalculationListPage() {
     setVisibleColumns(prev => ({ ...prev, [column]: checked }))
   }
   
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | Date) => {
     return new Date(dateString).toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",

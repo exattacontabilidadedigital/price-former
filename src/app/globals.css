@@ -444,7 +444,6 @@ main h1, main h2, main h3 {
 
 /* Force violet button text to be white in all modes - BUTTONS ONLY */
 button.bg-violet-600,
-[class*="bg-violet-600"],
 button[class*="bg-violet-600"],
 .bg-violet-600,
 [data-slot="button"][class*="bg-violet-600"] {
@@ -662,10 +661,7 @@ button[class*="bg-violet-"],
   color: inherit;
 }
 
-/* Fix any lingering dark mode text inheritance */
-:root:not(.dark) [class*="dark:text-"] {
-  color: #111827 !important;
-}
+/* Removed dangerous dark:text- override */
 
 /* Force white background for cards in light mode */
 :root:not(.dark) [data-slot="card"].bg-white,
